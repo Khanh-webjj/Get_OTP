@@ -14,6 +14,17 @@ API_KEY = "nfpheeadlmdgdovoupzbmiquzk"
 
 TIMEOUT = 30  # Timeout in seconds
 
+BRAND_NAME = {
+    "TIKTOK" : 'tiktok',
+    "AIRBNB" : 'airbnb',
+    "SHEIN" : 'shein',
+    "ALIBABA" : 'alibaba',
+    "TIKTOKADS" : 'tiktokads',
+    "AMAZON" : 'amazon',
+    "TINDER" : 'tinder',
+    "PINTEREST" : 'pinterest',
+}
+
 # Database configuration Mongodb
 DB_HOST = "localhost"
 DB_PORT = 27017
