@@ -2,11 +2,8 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import time;
-import Util.Thread as ThreadUtil;
-import Handlers.PhoneHandler as phoneHandler
-from selenium import webdriver;
-import Handlers.TinderHandler as tinderHandler
-
+import Handlers.PhoneHandler as PhoneHandler
+import Handlers.TinderHandler as TinderHandler
 wrongTimeOut = 0
 
 def GetOtpProcess(wrongTime):
@@ -14,7 +11,7 @@ def GetOtpProcess(wrongTime):
     acount = "CanTest_gw";
     phoneNumb="855182551481"
     try:
-        dataReturn = phoneHandler.CallOtpApi\
+        dataReturn = PhoneHandler.CallOtpApi\
             (phoneNumb=phoneNumb, brandName=brandName, acount= acount);
         # if (dataReturn == "Message not found or Archived for another partner"):
         #     print("Nall!!")
@@ -27,7 +24,7 @@ def GetOtpProcess(wrongTime):
 
 
 def TinderHandle(wrongTime):
-    testTinder = tinderHandler.TestTinder();
+    testTinder = TinderHandler.TestTinder();
     testTinder.setup_method(None)
     try:
         testTinder.test_tinder()
