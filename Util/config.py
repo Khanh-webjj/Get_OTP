@@ -23,3 +23,5 @@ DB_NAME = "your_database_name"
 
 # Other configurations
 DEBUG_MODE = True
+
+PROXY = "88.209.207.107:50100"

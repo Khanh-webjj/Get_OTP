@@ -2,8 +2,17 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import time;
+import os
+
+from openpyxl import load_workbook
+
 import Handlers.PhoneHandler as PhoneHandler
 import Handlers.TinderHandler as TinderHandler
+import Util.Thread as ThreadUtil
+import shutil
+
+from Handlers.ExcelHandler import merge_excel_files
+
 wrongTimeOut = 0
 
 def GetOtpProcess(wrongTime):
@@ -23,43 +32,56 @@ def GetOtpProcess(wrongTime):
         return;
 
 
-def TinderHandle(wrongTime):
+def TinderHandle(wrongTime, i, idx,workbook):
     testTinder = TinderHandler.TestTinder();
     testTinder.setup_method(None)
     try:
-        testTinder.test_tinder()
+        testTinder.test_tinder(str(i),idx,workbook)
     except:
         wrongTime += 1
         print("wrong")
 
-def Loop(loopAmout):
+def Loop(loopAmout,num_thread):
+    file_name = 'D:\\Workspace\\Get_OTP\\Resource\\Excel\\report_template.xlsx'
+    new_file_name = 'D:\\Workspace\\Get_OTP\\Resource\\Excel\\report_template' + str(num_thread) + '.xlsx'
+    workbook = load_workbook(new_file_name)
     for i in range(0, loopAmout, 1):
         print(f"time: {i}");
-        GetOtpProcess(wrongTimeOut);
+
+        shutil.copy(file_name, new_file_name)
+        TinderHandle(wrongTimeOut,str(num_thread), i+1, workbook);
+        # GetOtpProcess(wrongTimeOut);
+    workbook.save(file_name)
 
 def LoopByTime(startTime):
     while(time.time()-startTime < 60*3):
         GetOtpProcess(wrongTimeOut);
 
-otpGet = 10000;
+otpGet = 4;
 
 # Số lượng luồng bạn muốn tạo
-num_threads = 10
+num_threads = 2
 
 start_time = time.time()  # Lấy thời gian bắt đầu
 
-# # Tạo và bắt đầu các luồng
-# for i in range(num_threads):
-#     ThreadUtil.CreateThreadForLoopFunc(Loop, otpGet//num_threads);
-# ThreadUtil.StartAllThread();
-# ThreadUtil.JoinAllThreads();
+# Tạo và bắt đầu các luồng
+for i in range(num_threads):
+    ThreadUtil.CreateThreadForLoopFunc(Loop, otpGet//num_threads,i);
+ThreadUtil.StartAllThread();
+ThreadUtil.JoinAllThreads();
 
 # for i in range(num_threads):
 #     ThreadUtil.CreateThreadForLoopFunc(LoopByTime, start_time);
 # ThreadUtil.StartAllThread();
 # ThreadUtil.JoinAllThreads();
 
-TinderHandle(wrongTimeOut);
+# TinderHandle(wrongTimeOut);
+
+for num_thread in range(num_threads):
+    final = 'D:\\Workspace\\Get_OTP\\Resource\\Excel\\report_total.xlsx'
+    each_thread = 'D:\\Workspace\\Get_OTP\\Resource\\Excel\\report_template' + str(num_thread) + '.xlsx'
+    merge_excel_files(final,each_thread)
+    # os.remove(each_thread)
 
 
 end_time = time.time()  # Lấy thời gian kết thúc
