@@ -4,8 +4,9 @@
 import time;
 import Handlers.PhoneHandler as PhoneHandler
 import Handlers.TinderHandler as TinderHandler
+import Handlers.TiktokHandler as TiktokHandler
 import Util.Thread as ThreadUtil
-wrongTimeOut = 0
+
 
 def GetOtpProcess(wrongTime):
     brandName = "tinder";
@@ -21,22 +22,35 @@ def GetOtpProcess(wrongTime):
     except Exception as e:
         print(f"Error in GetOtpProcess: {e}")
         wrongTime += 1;
-        return;
+        return False;
+    return True;
 
-
+wrongTimeOut = 0
 def TinderHandle(wrongTime):
     testTinder = TinderHandler.TestTinder();
     testTinder.setup_method(None)
     try:
-        testTinder.test_tinder()
-    except:
+        testTinder.test_tinder();
+    except Exception as e:
+        wrongTime += 1
+        print("wrong")
+
+    # testTinder.teardown_method(None)
+
+def TiktokHandle(wrongTime):
+    testTiktok = TiktokHandler.TestTiktok();
+    testTiktok.setup_method(None)
+    try:
+        testTiktok.test_tiktok();
+    except Exception as e:
         wrongTime += 1
         print("wrong")
 
 def Loop(loopAmout):
     for i in range(0, loopAmout, 1):
         print(f"time: {i}");
-        GetOtpProcess(wrongTimeOut);
+        TinderHandle(wrongTimeOut);
+        # GetOtpProcess(wrongTimeOut);
 
 def LoopByTime(startTime):
     while(time.time()-startTime < 60*3):
@@ -60,9 +74,10 @@ start_time = time.time()  # Lấy thời gian bắt đầu
 # ThreadUtil.StartAllThread();
 # ThreadUtil.JoinAllThreads();
 
-TinderHandle(wrongTimeOut);
-
-
+print("start !!")
+for i in range(1,10):
+    print(f"loop {i}:")
+    TinderHandle(wrongTime= wrongTimeOut)
 end_time = time.time()  # Lấy thời gian kết thúc
 
 execution_time = end_time - start_time  # Tính toán thời gian thực hiện

@@ -36,4 +36,3 @@ def Write_excel(path, contents):
     wb.save(path)
 
 # read from excel
-def read
