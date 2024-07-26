@@ -26,35 +26,6 @@ class TestTinder():
     def teardown_method(self, method):
         self.driver.quit()
 
-    # def test_tinder(self):
-    #     self.driver.get("https://tinder.com/")
-    #     self.driver.set_window_size(1936, 1096)
-    #     wait = WebDriverWait(self.driver, 10)
-    #     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".Va\\(m\\):nth-child(2)"))).click()
-    #
-    #     wait.until(EC.element_to_be_clickable(
-    #         (By.CSS_SELECTOR, ".Typs\\(body-1-strong\\) > .Typs\\(body-3-regular\\)"))).click()
-    #     wait.until(EC.element_to_be_clickable(
-    #         (By.CSS_SELECTOR, ".Mt\\(20px\\) .lxn9zzn"))).click()
-    #     wait.until(EC.element_to_be_clickable(
-    #         (By.CSS_SELECTOR, ".D\\(ib\\)--s > .Td\\(u\\)"))).click()
-    #     element = wait.until(EC.element_to_be_clickable(
-    #         (By.CSS_SELECTOR, ".My\\(12px\\):nth-child(3) .Mend\\(a\\)")))
-    #     actions = ActionChains(self.driver)
-    #     actions.move_to_element(element).perform()
-    #     element.click()
-    #     self.driver.find_element(By.CSS_SELECTOR, ".Bdrsbstart\\(0\\)\\!").click()
-    #     self.driver.find_element(By.CSS_SELECTOR, ".Cf:nth-child(37)").click()
-    #     self.driver.find_element(By.NAME, "phone_number").click()
-    #     self.driver.find_element(By.NAME, "phone_number").send_keys("123456788")
-    #     self.driver.find_element(By.CSS_SELECTOR, ".W\\(70\\%\\) .lxn9zzn").click()
-    #     element = self.driver.find_element(By.CSS_SELECTOR, ".W\\(70\\%\\) .lxn9zzn")
-    #     actions = ActionChains(self.driver)
-    #     actions.move_to_element(element).perform()
-    #     self.driver.switch_to.frame(8)
-    #     self.driver.switch_to.frame(0)
-    #     self.driver.switch_to.frame(0)
-    #     self.driver.find_element(By.ID, "home_children_button").click()
 
     # def test_tinder(self):
     #     # Test name: Untitled
@@ -135,11 +106,23 @@ class TestTinder():
         self.driver.find_element(By.NAME, "phone_number").send_keys(phone['Msisdn'][3:])
         # 11 | click | css=.W\(70\%\) .c9iqosj |
         self.driver.find_element(By.CSS_SELECTOR, ".W\\(70\\%\\) .c9iqosj").click()
-        time.sleep(4);
+        if self.CaptchaExist():
+            wait.until(EC.element_to_be_clickable((By.ID, "home_children_button"))).click()
+        # time.sleep(60*5)
+        time.sleep(4)
         mess = call_api_continuously(phone['Msisdn'],"tinder","CanTest_gw")
         append_to_excel(phone['Msisdn'],"success",mess["status"],mess['final_result'],idx,workbook)
 
+    def CaptchaExist(self):
+        print("captchaExistCheck")
+        try:
+            time.sleep(5)
+            # WebDriverWait(self.driver, 20).until(
+            #     EC.presence_of_element_located((By.ID, "home")))
+            self.driver.find_element(By.ID, "home")
 
-
-
+        except:
+            print("cant find verify capcha")
+            return False
+        return True
 
