@@ -34,7 +34,7 @@ def GetOtpProcess(wrongTime):
 
 def TinderHandle(wrongTime, i, idx,workbook):
     testTinder = TinderHandler.TestTinder()
-    testTinder.setup_method(None)
+    testTinder.setup_method(None,int(i))
     try:
         testTinder.test_tinder(str(i),idx,workbook)
     except:

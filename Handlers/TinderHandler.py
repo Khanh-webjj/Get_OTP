@@ -10,13 +10,19 @@ from selenium.webdriver.support.wait import WebDriverWait
 from Handlers.ExcelHandler import append_to_excel
 from Handlers.PhoneHandler import CallMsisonApi, CallOtpApi, call_api_continuously
 
-PROXY = "88.209.207.107:50100"
+PROXY = [
+    "88.209.207.107:50100",
+    "88.209.207.226:50100",
+    "88.209.207.158:50100",
+    "88.209.207.151:50100",
+    "88.209.207.150:50100",
+]
 class TestTinder():
-    def setup_method(self, method):
+    def setup_method(self, method,idx):
         options = {
             'proxy': {
-                'http': 'http://khanhchuoicuanam:4DVQDAJ4tZ@88.209.207.107:50100',
-                'https': 'https://khanhchuoicuanam:4DVQDAJ4tZ@88.209.207.107:50100',
+                'http': f'http://khanhchuoicuanam:4DVQDAJ4tZ@{PROXY[idx//5]}',
+                'https': f'http://khanhchuoicuanam:4DVQDAJ4tZ@{PROXY[idx//5]}',
                 'no_proxy': 'localhost,127.0.0.1'
             }
         }
