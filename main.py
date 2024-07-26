@@ -41,17 +41,12 @@ def TinderHandle(wrongTime, i, idx,workbook):
         wrongTime += 1
         print("wrong")
 
-def Loop(loopAmout,num_thread):
-    file_name = 'D:\\Workspace\\Get_OTP\\Resource\\Excel\\report_template.xlsx'
-    new_file_name = 'D:\\Workspace\\Get_OTP\\Resource\\Excel\\report_template' + str(num_thread) + '.xlsx'
-    workbook = load_workbook(new_file_name)
+def Loop(loopAmout,num_thread,workbook):
     for i in range(0, loopAmout, 1):
         print(f"time: {i}");
-
-        shutil.copy(file_name, new_file_name)
         TinderHandle(wrongTimeOut,str(num_thread), i+1, workbook);
         # GetOtpProcess(wrongTimeOut);
-    workbook.save(file_name)
+    workbook.save(f'D:\\Workspace\\Get_OTP\\Resource\\Excel\\report_template{num_thread}.xlsx')
 
 def LoopByTime(startTime):
     while(time.time()-startTime < 60*3):
@@ -63,10 +58,17 @@ otpGet = 4;
 num_threads = 2
 
 start_time = time.time()  # Lấy thời gian bắt đầu
+workbook= []
+template_file_name = 'D:\\Workspace\\Get_OTP\\Resource\\Excel\\report_template.xlsx'
+
+for i in range(num_threads):
+    new_file_name = f'D:\\Workspace\\Get_OTP\\Resource\\Excel\\report_template{i}.xlsx'
+    shutil.copy(template_file_name, new_file_name)
+    workbook.append(load_workbook(new_file_name))
 
 # Tạo và bắt đầu các luồng
 for i in range(num_threads):
-    ThreadUtil.CreateThreadForLoopFunc(Loop, otpGet//num_threads,i);
+    ThreadUtil.CreateThreadForLoopFunc(Loop, otpGet//num_threads,i,workbook[0]);
 ThreadUtil.StartAllThread();
 ThreadUtil.JoinAllThreads();
 
